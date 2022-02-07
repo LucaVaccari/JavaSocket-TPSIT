@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'it.castelli.tpsit.JavaScoket.ClientMain'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':utils')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+application {
+    mainClass = mainClassName
+}
