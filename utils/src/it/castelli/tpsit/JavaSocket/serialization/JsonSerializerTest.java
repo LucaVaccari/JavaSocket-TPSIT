@@ -8,50 +8,49 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JsonSerializerTest {
-	static class TestClass {
-		public int a;
-		public int b;
+    @Test
+    void serialize() {
+        try {
+            String json = JsonSerializer.serialize(new TestClass(1, 2));
+            assertEquals("{\"a\":1,\"b\":2}", json.strip().toLowerCase());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
-		public TestClass(int a, int b) {
-			this.a = a;
-			this.b = b;
-		}
+    @Test
+    void deserialize() {
+        try {
+            TestClass testClass = JsonSerializer.deserialize("{\"a\":1,\"b\":2}", TestClass.class);
+            assertEquals(new TestClass(1, 2), testClass);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
-		public TestClass() {}
+    static class TestClass {
+        public int a;
+        public int b;
 
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
-			TestClass testClass = (TestClass) o;
-			return a == testClass.a && b == testClass.b;
-		}
+        public TestClass(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
 
-		@Override
-		public int hashCode() {
-			return Objects.hash(a, b);
-		}
-	}
+        public TestClass() {
+        }
 
-	@Test
-	void serialize() {
-		try {
-			String json = JsonSerializer.serialize(new TestClass(1, 2));
-			assertEquals("{\"a\":1,\"b\":2}", json.strip().toLowerCase());
-		}
-		catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-	}
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TestClass testClass = (TestClass) o;
+            return a == testClass.a && b == testClass.b;
+        }
 
-	@Test
-	void deserialize() {
-		try {
-			TestClass testClass = JsonSerializer.deserialize("{\"a\":1,\"b\":2}", TestClass.class);
-			assertEquals(new TestClass(1, 2), testClass);
-		}
-		catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-	}
+        @Override
+        public int hashCode() {
+            return Objects.hash(a, b);
+        }
+    }
 }

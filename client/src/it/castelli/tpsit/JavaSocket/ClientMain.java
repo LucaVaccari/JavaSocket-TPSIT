@@ -1,16 +1,26 @@
 package it.castelli.tpsit.JavaSocket;
 
 import it.castelli.tpsit.JavaSocket.connection.Connection;
+import it.castelli.tpsit.JavaSocket.console.ClientCommandProcessor;
+import it.castelli.tpsit.JavaSocket.console.ConsoleListener;
 
 public class ClientMain {
-	private static Connection connection;
+    private static final Connection connection = new Connection();
+    private static final ConsoleListener consoleListener = new ConsoleListener();
 
-	public static void main(String[] args) {
-		connection = new Connection();
-		connection.start();
-	}
+    public static void main(String[] args) {
+        connection.start();
+        new ClientCommandProcessor().init();
+        consoleListener.start();
+    }
 
-	public static Connection getConnection() {
-		return connection;
-	}
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void stop() {
+        connection.interrupt();
+        consoleListener.interrupt();
+        System.exit(0);
+    }
 }
