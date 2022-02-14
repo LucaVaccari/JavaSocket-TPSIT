@@ -9,7 +9,6 @@ public class ClientMain {
     private static final ConsoleListener consoleListener = new ConsoleListener();
 
     public static void main(String[] args) {
-        connection.start();
         new ClientCommandProcessor().init();
         consoleListener.start();
     }

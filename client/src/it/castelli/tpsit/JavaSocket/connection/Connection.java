@@ -9,26 +9,21 @@ import java.net.Socket;
  * Handles the connection with the server (input and output)
  */
 public class Connection extends Thread {
-    // TODO: put address in file
-    public static final String SERVER_ADDRESS = "localhost";
+    private String serverAddress = "localhost";
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
 
-    public Connection() {
-        try {
-            socket = new Socket(SERVER_ADDRESS, GlobalData.PORT);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            start();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: handle error
-        }
-    }
-
     @Override
     public void run() {
+        try {
+            socket = new Socket(serverAddress, GlobalData.PORT);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            System.out.println("Connected with " + serverAddress + " on port " + GlobalData.PORT);
+        } catch (IOException e) {
+            System.err.println("Error while connecting to the server: invalid address or server unreachable");
+        }
         // TODO: find a way to not use while(true)
         while (true) {
             try {
@@ -46,5 +41,19 @@ public class Connection extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void interrupt() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.interrupt();
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
     }
 }

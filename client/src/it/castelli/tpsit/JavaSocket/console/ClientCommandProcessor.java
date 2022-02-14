@@ -8,9 +8,11 @@ public class ClientCommandProcessor extends CommandProcessor {
         String[] tokens = inputLine.strip().split(" ");
         String command = tokens[0];
         switch (command.toLowerCase()) {
-            case "stop":
-                ClientMain.stop();
-                break;
+            case "stop" -> ClientMain.stop();
+            case "connect" -> {
+                ClientMain.getConnection().setServerAddress(tokens[1]);
+                ClientMain.getConnection().start();
+            }
         }
     }
 }

@@ -24,3 +24,7 @@ sourceSets {
 application {
     mainClass = mainClassName
 }
+
+run {
+    standardInput = System.in
+}

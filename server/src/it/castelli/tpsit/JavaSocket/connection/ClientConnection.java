@@ -17,6 +17,7 @@ public class ClientConnection extends Thread {
     @Override
     public void run() {
         try {
+            System.out.println("New active connection at " + socket.getInetAddress().getHostName());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             // TODO: receive client messages
