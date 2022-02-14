@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'it.castelli.tpsit.JavaScoket.ServerMain'
+mainClassName = 'it.castelli.tpsit.JavaSocket.ServerMain'
 
 dependencies {
     implementation project(":utils")

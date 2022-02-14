@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'it.castelli.tpsit.JavaScoket.ClientMain'
+mainClassName = 'it.castelli.tpsit.JavaSocket.ClientMain'
 
 repositories {
     mavenCentral()
