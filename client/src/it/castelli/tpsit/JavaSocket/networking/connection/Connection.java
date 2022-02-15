@@ -1,6 +1,8 @@
-package it.castelli.tpsit.JavaSocket.connection;
+package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.GlobalData;
+import it.castelli.tpsit.JavaSocket.networking.message.Message;
+import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 import java.io.*;
 import java.net.Socket;
@@ -27,14 +29,19 @@ public class Connection extends Thread {
         // TODO: find a way to not use while(true)
         while (true) {
             try {
-                String message = reader.readLine();
-                // TODO: handle received messages
+                String jsonMessage = reader.readLine();
+                Message message = JsonSerializer.deserialize(jsonMessage, Message.class);
+                // TODO: handle message
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Sends a message to the server
+     * @param json The json message
+     */
     public void send(String json) {
         try {
             writer.write(json);

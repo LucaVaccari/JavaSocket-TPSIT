@@ -1,6 +1,6 @@
 package it.castelli.tpsit.JavaSocket;
 
-import it.castelli.tpsit.JavaSocket.connection.Connection;
+import it.castelli.tpsit.JavaSocket.networking.connection.Connection;
 import it.castelli.tpsit.JavaSocket.console.ClientCommandProcessor;
 import it.castelli.tpsit.JavaSocket.console.ConsoleListener;
 

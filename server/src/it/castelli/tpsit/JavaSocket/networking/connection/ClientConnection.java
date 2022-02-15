@@ -1,4 +1,4 @@
-package it.castelli.tpsit.JavaSocket.connection;
+package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,6 +25,10 @@ public class ClientConnection extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send(String message) {
+
     }
 
     @Override

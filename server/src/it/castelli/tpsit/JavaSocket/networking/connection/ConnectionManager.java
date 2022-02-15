@@ -1,4 +1,4 @@
-package it.castelli.tpsit.JavaSocket.connection;
+package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.GlobalData;
 
