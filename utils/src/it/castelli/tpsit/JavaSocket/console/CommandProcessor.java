@@ -12,20 +12,8 @@ public abstract class CommandProcessor {
     private static CommandProcessor instance;
 
     /**
-     * Initiates the singleton instance. Should be called before using this class.
-     */
-    public void init() {
-        setInstance(this);
-    }
-
-    /**
-     * Handles a command inserted in the console
-     * @param inputLine The full line of the command inserted
-     */
-    public abstract void handleCommand(String inputLine);
-
-    /**
      * Singleton getter
+     *
      * @return The singleton instance
      */
     public static CommandProcessor getInstance() {
@@ -34,9 +22,24 @@ public abstract class CommandProcessor {
 
     /**
      * Singleton setter
+     *
      * @param instance The new instance
      */
     protected static void setInstance(CommandProcessor instance) {
         CommandProcessor.instance = instance;
     }
+
+    /**
+     * Initiates the singleton instance. Should be called before using this class.
+     */
+    public void init() {
+        setInstance(this);
+    }
+
+    /**
+     * Handles a command inserted in the console
+     *
+     * @param inputLine The full line of the command inserted
+     */
+    public abstract void handleCommand(String inputLine);
 }

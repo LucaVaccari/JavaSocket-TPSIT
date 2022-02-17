@@ -2,6 +2,8 @@ package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.GlobalData;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.GenericMessageHandler;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.RemoteCalculatorMessageHandler;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 import java.io.*;
@@ -31,7 +33,24 @@ public class Connection extends Thread {
             try {
                 String jsonMessage = reader.readLine();
                 Message message = JsonSerializer.deserialize(jsonMessage, Message.class);
-                // TODO: handle message
+                switch (message.getService()) {
+                    case 0 -> GenericMessageHandler.handle(message);
+                    case 1 -> RemoteCalculatorMessageHandler.handle(message);
+                    case 2 -> {
+                    }
+                    case 3 -> {
+                    }
+                    case 4 -> {
+                    }
+                    case 5 -> {
+                    }
+                    case 6 -> {
+                    }
+                    case 7 -> {
+                    }
+                    case 8 -> {
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -40,6 +59,7 @@ public class Connection extends Thread {
 
     /**
      * Sends a message to the server
+     *
      * @param json The json message
      */
     public void send(String json) {
@@ -47,6 +67,7 @@ public class Connection extends Thread {
             writer.write(json);
         } catch (IOException e) {
             e.printStackTrace();
+            // TODO: handle error
         }
     }
 

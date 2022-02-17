@@ -1,5 +1,10 @@
 package it.castelli.tpsit.JavaSocket.networking.connection;
 
+import it.castelli.tpsit.JavaSocket.networking.message.Message;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.GenericMessageHandler;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.RemoteCalculatorMessageHandler;
+import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -8,6 +13,8 @@ import java.net.Socket;
  */
 public class ClientConnection extends Thread {
     private final Socket socket;
+    private String username;
+    private BufferedWriter writer;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
@@ -17,18 +24,45 @@ public class ClientConnection extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("New active connection at " + socket.getInetAddress().getHostName());
+            System.out.println("New active connection at " + socket.getInetAddress().getHostName() + " on " + socket.getPort());
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            // TODO: receive client messages
-            // TODO: handle client messages
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+            while (true) {
+                String input = reader.readLine();
+                System.out.println(input);
+                Message message = JsonSerializer.deserialize(input, Message.class);
+                switch (message.getService()) {
+                    case 0 -> GenericMessageHandler.handle(message, this);
+                    case 1 -> RemoteCalculatorMessageHandler.handle(message, this);
+                    case 2 -> {
+                    }
+                    case 3 -> {
+                    }
+                    case 4 -> {
+                    }
+                    case 5 -> {
+                    }
+                    case 6 -> {
+                    }
+                    case 7 -> {
+                    }
+                    case 8 -> {
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void send(String message) {
-
+        try {
+            writer.write(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // TODO: handle send error
+        }
     }
 
     @Override
@@ -40,5 +74,13 @@ public class ClientConnection extends Thread {
             // TODO: handle error
         }
         super.interrupt();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -1,8 +1,8 @@
 package it.castelli.tpsit.JavaSocket;
 
-import it.castelli.tpsit.JavaSocket.networking.connection.ConnectionManager;
 import it.castelli.tpsit.JavaSocket.console.ConsoleListener;
 import it.castelli.tpsit.JavaSocket.console.ServerCommandProcessor;
+import it.castelli.tpsit.JavaSocket.networking.connection.ConnectionManager;
 
 public class ServerMain {
     private static final ConnectionManager connectionManager = new ConnectionManager();

@@ -2,7 +2,7 @@ package it.castelli.tpsit.JavaSocket.console;
 
 import it.castelli.tpsit.JavaSocket.ServerMain;
 
-public class ServerCommandProcessor extends CommandProcessor{
+public class ServerCommandProcessor extends CommandProcessor {
     @Override
     public void init() {
         setInstance(this);
