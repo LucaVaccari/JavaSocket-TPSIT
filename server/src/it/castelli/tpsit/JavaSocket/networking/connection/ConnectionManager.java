@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Handles the connections with the clients
  */
 public class ConnectionManager extends Thread {
-	private final ArrayList<ClientConnection> connections = new ArrayList<>();
+	private final ArrayList<ClientConnection> unloggedConnections = new ArrayList<>();
+	private final HashMap<String, ClientConnection> loggedConnections = new HashMap<>();
 
 	@Override
 	public void run() {
@@ -21,7 +23,7 @@ public class ConnectionManager extends Thread {
 			// TODO: find a way to not use while(true)
 			while (true) {
 				Socket newClientSocket = serverSocket.accept();
-				connections.add(new ClientConnection(newClientSocket));
+				unloggedConnections.add(new ClientConnection(newClientSocket));
 			}
 		}
 		catch (IOException e) {
@@ -35,12 +37,27 @@ public class ConnectionManager extends Thread {
      * @param message The message to send
      */
 	public void broadcast(String message) {
-		for (var client : connections) client.send(message);
+		for (var client : loggedConnections.values()) client.send(message);
+	}
+
+	/**
+	 * Register a new connection as "logged" (with a username)
+	 * Removes the previous anonymous one
+	 * @param username The unique username of the connection
+	 * @param connection The connection to register
+	 */
+	public void logConnection(String username, ClientConnection connection) {
+		if (loggedConnections.containsKey(username))
+			System.err.println("Trying to add an already logged user");
+		else {
+			loggedConnections.put(username, connection);
+			unloggedConnections.remove(connection);
+		}
 	}
 
 	@Override
 	public void interrupt() {
-		for (var connection : connections) {
+		for (var connection : unloggedConnections) {
 			connection.interrupt();
 		}
 		super.interrupt();
