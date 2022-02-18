@@ -8,19 +8,21 @@ import it.castelli.tpsit.JavaSocket.networking.message.Message;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 public class GenericMessageHandler {
-    public static void handle(Message message, ClientConnection clientConnection) {
-        switch (message.getType()) {
-            case Message.LOGIN_TYPE -> {
-                try {
-                    LoginMessage loginMessage = message.getContent(LoginMessage.class);
-                    ServerMain.getConnectionManager().logConnection(loginMessage.username(), clientConnection);
-                    ServerMain.getConnectionManager().send(loginMessage.username(), JsonSerializer.serialize(message));
-                    System.out.println("New user logged: " + loginMessage.username());
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-            default -> System.err.println("(Program log) Error in generic message, unsupported message type: " + message.getType());
-        }
-    }
+	public static void handle(Message message, ClientConnection clientConnection) {
+		switch (message.getType()) {
+			case Message.LOGIN_TYPE -> {
+				try {
+					LoginMessage loginMessage = message.getContent(LoginMessage.class);
+					ServerMain.getConnectionManager().logConnection(loginMessage.username(), clientConnection);
+					ServerMain.getConnectionManager().send(loginMessage.username(), JsonSerializer.serialize(message));
+					System.out.println("New user logged: " + loginMessage.username());
+				}
+				catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			}
+			default -> System.err.println(
+					"(Program log) Error in generic message, unsupported message type: " + message.getType());
+		}
+	}
 }

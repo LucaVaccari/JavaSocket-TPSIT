@@ -6,20 +6,22 @@ import it.castelli.tpsit.JavaSocket.networking.message.LoginMessage;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
 
 public class GenericMessageHandler {
-    public static void handle(Message message) {
-        switch (message.getType()) {
-            case Message.LOGIN_TYPE -> {
-                try {
-                    LoginMessage loginMessage = message.getContent(LoginMessage.class);
-                    UserLogManager.login();
-                    UserLogManager.setUsername(loginMessage.username());
-                    System.out.println("Logged in successfully with username " + loginMessage.username());
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    // TODO: handle error
-                }
-            }
-            default -> System.err.println("(Program log) Error in generic message, unsupported message type: " + message.getType());
-        }
-    }
+	public static void handle(Message message) {
+		switch (message.getType()) {
+			case Message.LOGIN_TYPE -> {
+				try {
+					LoginMessage loginMessage = message.getContent(LoginMessage.class);
+					UserLogManager.login();
+					UserLogManager.setUsername(loginMessage.username());
+					System.out.println("Logged in successfully with username " + loginMessage.username());
+				}
+				catch (JsonProcessingException e) {
+					e.printStackTrace();
+					// TODO: handle error
+				}
+			}
+			default -> System.err.println(
+					"(Program log) Error in generic message, unsupported message type: " + message.getType());
+		}
+	}
 }
