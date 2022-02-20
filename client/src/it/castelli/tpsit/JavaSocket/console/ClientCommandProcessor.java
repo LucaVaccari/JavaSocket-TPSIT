@@ -15,7 +15,6 @@ public class ClientCommandProcessor extends CommandProcessor {
 		String[] tokens = inputLine.strip().split(" ");
 		String command = tokens[0];
 
-
 		switch (command.toLowerCase()) {
 			case "stop" -> {
 				// TODO: send stop message
@@ -37,7 +36,8 @@ public class ClientCommandProcessor extends CommandProcessor {
 						break;
 					}
 					if (tokens.length != 2) {
-						System.err.println("Wrong syntax. Correct use: log <username>");
+						System.err.println("Wrong syntax. Correct use: " +
+								"log <username> (the username cannot contain spaces)");
 					}
 					else {
 						// TODO: validate username

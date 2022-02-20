@@ -1,7 +1,6 @@
 package it.castelli.tpsit.JavaSocket.networking.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 /**
@@ -18,7 +17,6 @@ public class Message {
      * <p>
      * All the others service are currently unsupported, or they don't use this message.
      */
-    @JsonSerialize
     public record GenericMessage(String message) {
     }
 
@@ -28,18 +26,17 @@ public class Message {
      * <p>
      * Registrations are valid only for one session. If the user quits it must register again.
      */
-    @JsonSerialize
     public record LoginMessage(String username) {
     }
 
     /**
      * Sent by the client. Represents the request of making a calculation.
      */
-    @JsonSerialize
     public record CalculateMessage(char operation, double a, double b) {
     }
 
     public static final String GENERIC_TYPE = "generic";
+    public static final String ERROR_MESSAGE = "error";
     public static final String LOGIN_TYPE = "login";
     public static final String CALCULATE_TYPE = "calculate";
 

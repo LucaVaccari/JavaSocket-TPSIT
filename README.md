@@ -24,10 +24,7 @@ Brainstorming:
 
 TODO:
 
-- username system
 - client actions/commands/messages
-	- ask username
-	- calc
 	- aliquot
 	- guessTheNumber:
 		- start game

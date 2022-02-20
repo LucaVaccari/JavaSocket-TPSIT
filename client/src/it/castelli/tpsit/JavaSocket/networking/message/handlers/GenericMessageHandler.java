@@ -19,6 +19,15 @@ public class GenericMessageHandler {
 					// TODO: handle error
 				}
 			}
+			case Message.ERROR_MESSAGE -> {
+				try {
+					Message.GenericMessage genericMessage = message.getContent(Message.GenericMessage.class);
+					System.err.println("Error from the server: " + genericMessage.message());
+				}
+				catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			}
 			default -> System.err.println(
 					"(Program log) Error in generic message, unsupported message type: " + message.getType());
 		}

@@ -20,15 +20,11 @@ public class RemoteCalculatorMessageHandler {
 						default -> throw new IllegalStateException("Unexpected value: " + calculateMessage.operation());
 					};
 
-					try {
-						String jsonSubMessage = JsonSerializer.serialize(new Message.GenericMessage(String.valueOf(result)));
-						Message newMessage =
-								new Message(Message.GENERIC_TYPE, clientConnection.getUsername(), 1, jsonSubMessage);
-						clientConnection.send(JsonSerializer.serialize(newMessage));
-					}
-					catch (JsonProcessingException e) {
-						e.printStackTrace();
-					}
+					String jsonSubMessage =
+							JsonSerializer.serialize(new Message.GenericMessage(String.valueOf(result)));
+					Message newMessage =
+							new Message(Message.GENERIC_TYPE, clientConnection.getUsername(), 1, jsonSubMessage);
+					clientConnection.send(JsonSerializer.serialize(newMessage));
 				}
 				catch (JsonProcessingException e) {
 					e.printStackTrace();

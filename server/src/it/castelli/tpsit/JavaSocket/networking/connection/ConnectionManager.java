@@ -60,8 +60,10 @@ public class ConnectionManager extends Thread {
 	 * @param connection The connection to register
 	 */
 	public void logConnection(String username, ClientConnection connection) {
-		if (loggedConnections.containsKey(username))
-			throw new IllegalArgumentException("Trying to add an already logged user"); // TODO: send error to the client
+		if (loggedConnections.containsKey(username)) {
+			// TODO: send error to the client
+			throw new IllegalArgumentException("Trying to add an already logged user");
+		}
 		else {
 			loggedConnections.put(username, connection);
 			connection.setUsername(username);
