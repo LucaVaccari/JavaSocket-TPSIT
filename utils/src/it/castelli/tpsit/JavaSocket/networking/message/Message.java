@@ -35,11 +35,22 @@ public class Message {
 	public record CalculateMessage(char operation, double a, double b) {
 	}
 
+	/**
+	 * If sent by the client it represents the request of calculating the IRPEF aliquot.
+	 * If sent by the server it contains the result of the calculation.
+	 */
+	public record AliquotMessage(double value) {
+	}
+
+	// GENERIC MESSAGES
 	public static final String GENERIC_TYPE = "generic";
 	public static final String ERROR_MESSAGE = "error";
 	public static final String LOGIN_TYPE = "login";
 	public static final String STOP_MESSAGE = "stop";
+	// CALCULATOR MESSAGES
 	public static final String CALCULATE_TYPE = "calculate";
+	// IRPEF ALIQUOTS MESSAGES
+	public static final String ALIQUOT_CALC_TYPE = "aliquot";
 
 	private final String type;
 	private final String username;

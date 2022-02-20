@@ -34,5 +34,4 @@ TODO:
 - server actions/commands/messages
 	- enable, disable
 	- kick
-	- stop (disconnect everyone)
 	- help

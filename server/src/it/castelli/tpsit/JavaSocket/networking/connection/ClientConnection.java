@@ -2,8 +2,7 @@ package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.ServerMain;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
-import it.castelli.tpsit.JavaSocket.networking.message.handlers.GenericMessageHandler;
-import it.castelli.tpsit.JavaSocket.networking.message.handlers.RemoteCalculatorMessageHandler;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.*;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 import java.io.*;
@@ -32,27 +31,19 @@ public class ClientConnection extends Thread {
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
 			while (true) {
-				// TODO: handle socket exception
 				try {
 					String input = reader.readLine();
 					Message message = JsonSerializer.deserialize(input, Message.class);
 					switch (message.getService()) {
 						case 0 -> GenericMessageHandler.handle(message, this);
 						case 1 -> RemoteCalculatorMessageHandler.handle(message, this);
-						case 2 -> {
-						}
-						case 3 -> {
-						}
-						case 4 -> {
-						}
-						case 5 -> {
-						}
-						case 6 -> {
-						}
-						case 7 -> {
-						}
-						case 8 -> {
-						}
+						case 2 -> IRPEFAliquotsMessageHandler.handle(message, this);
+						case 3 -> GuessTheNumberMessageHandler.handle(message, this);
+						case 4 -> HangmanMessageHandler.handle(message, this);
+						case 5 -> AreaCalculatorMessageHandler.handle(message, this);
+						case 6 -> ECommerceMessageHandler.handle(message, this);
+						case 7 -> PARLANewsMessageHandler.handle(message, this);
+						case 8 -> AuctionMessageHandler.handle(message, this);
 					}
 				}
 				catch (SocketException exception) {
@@ -78,8 +69,7 @@ public class ClientConnection extends Thread {
 			writer.flush();
 		}
 		catch (IOException e) {
-			e.printStackTrace();
-			// TODO: handle send error
+			interrupt();
 		}
 	}
 
@@ -91,7 +81,6 @@ public class ClientConnection extends Thread {
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			// TODO: handle error
 		}
 		super.interrupt();
 	}

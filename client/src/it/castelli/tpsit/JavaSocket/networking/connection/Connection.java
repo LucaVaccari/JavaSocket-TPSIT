@@ -2,8 +2,7 @@ package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.GlobalData;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
-import it.castelli.tpsit.JavaSocket.networking.message.handlers.GenericMessageHandler;
-import it.castelli.tpsit.JavaSocket.networking.message.handlers.RemoteCalculatorMessageHandler;
+import it.castelli.tpsit.JavaSocket.networking.message.handlers.*;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 import java.io.*;
@@ -41,20 +40,13 @@ public class Connection extends Thread {
 					switch (message.getService()) {
 						case 0 -> GenericMessageHandler.handle(message);
 						case 1 -> RemoteCalculatorMessageHandler.handle(message);
-						case 2 -> {
-						}
-						case 3 -> {
-						}
-						case 4 -> {
-						}
-						case 5 -> {
-						}
-						case 6 -> {
-						}
-						case 7 -> {
-						}
-						case 8 -> {
-						}
+						case 2 -> IRPEFAliquotsMessageHandler.handle(message);
+						case 3 -> GuessTheNumberMessageHandler.handle(message);
+						case 4 -> HangmanMessageHandler.handle(message);
+						case 5 -> AreaCalculatorMessageHandler.handle(message);
+						case 6 -> ECommerceMessageHandler.handle(message);
+						case 7 -> PARLANewsMessageHandler.handle(message);
+						case 8 -> AuctionMessageHandler.handle(message);
 					}
 				}
 			}

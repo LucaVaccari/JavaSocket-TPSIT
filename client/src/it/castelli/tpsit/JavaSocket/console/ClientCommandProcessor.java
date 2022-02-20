@@ -92,6 +92,38 @@ public class ClientCommandProcessor extends CommandProcessor {
 					}
 				}
 			}
+			case "irpef", "aliquot" -> {
+				if (!ClientMain.getConnection().isConnected()) {
+					System.err.println(
+							"You must connect to a server with the conn or connect command before using the" +
+									" IRPEF aliquot calculator");
+					break;
+				}
+				if (!UserLogManager.isLogged()) {
+					System.err.println("You must login with the log or login command before using the IRPEF aliquot " +
+							"calculator");
+					break;
+				}
+				if (tokens.length != 2) {
+					System.err.println("Wrong syntax. Correct use: irpef <value>");
+				}
+				else {
+					try {
+						double value = Double.parseDouble(tokens[1]);
+						String jsonSubMessage = JsonSerializer.serialize(new Message.AliquotMessage(value));
+						Message message =
+								new Message(Message.ALIQUOT_CALC_TYPE, UserLogManager.getUsername(), 2,
+										jsonSubMessage);
+						ClientMain.getConnection().send(JsonSerializer.serialize(message));
+					}
+					catch (NumberFormatException e) {
+						System.err.println("The number inserted is not valid");
+					}
+					catch (JsonProcessingException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			default -> System.err.println("Unknown command. Type help for a list of available commands");
 		}
 	}

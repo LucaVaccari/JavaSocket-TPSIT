@@ -5,18 +5,17 @@ import it.castelli.tpsit.JavaSocket.networking.message.Message;
 
 public class RemoteCalculatorMessageHandler {
 	public static void handle(Message message) {
-		switch (message.getType()) {
-			case Message.GENERIC_TYPE -> {
-				try {
-					System.out.println(
-							"The result of the calculation is: " + message.getContent(Message.GenericMessage.class).message());
-				}
-				catch (JsonProcessingException e) {
-					e.printStackTrace();
-					// TODO: handle error
-				}
+		if (Message.GENERIC_TYPE.equals(message.getType())) {
+			try {
+				System.out.println("The result of the calculation is: " +
+						message.getContent(Message.GenericMessage.class).message());
 			}
-			default -> System.err.println(
+			catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			System.err.println(
 					"(Program log) Error in remote calculator message, unsupported message type: " + message.getType());
 		}
 	}
