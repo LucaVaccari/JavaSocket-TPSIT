@@ -46,10 +46,10 @@ public class ClientCommandProcessor extends CommandProcessor {
 								"log <username> (the username cannot contain spaces)");
 					}
 					else {
-						// TODO: validate username
-						String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(tokens[1]));
+						String username = tokens[1];
+						String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(username));
 						Message message =
-								new Message(Message.LOGIN_TYPE, tokens[1], 0, jsonSubMessage);
+								new Message(Message.LOGIN_TYPE, username, 0, jsonSubMessage);
 						String json = JsonSerializer.serialize(message);
 						ClientMain.getConnection().send(json);
 					}
