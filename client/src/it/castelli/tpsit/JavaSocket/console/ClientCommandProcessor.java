@@ -10,74 +10,83 @@ import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
  * Handles the commands inserted on the client console
  */
 public class ClientCommandProcessor extends CommandProcessor {
-    @Override
-    public void handleCommand(String inputLine) {
-        String[] tokens = inputLine.strip().split(" ");
-        String command = tokens[0];
+	@Override
+	public void handleCommand(String inputLine) {
+		String[] tokens = inputLine.strip().split(" ");
+		String command = tokens[0];
 
 
-        switch (command.toLowerCase()) {
-            case "stop" -> {
-                // TODO: send stop message
-                ClientMain.stop();
-            }
-            case "conn", "connect" -> {
-                if (tokens.length != 2) {
-                    System.err.println("Wrong syntax. Correct use: conn <address>");
-                } else {
-                    ClientMain.getConnection().setServerAddress(tokens[1]);
-                    ClientMain.getConnection().start();
-                }
-            }
-            case "log", "login" -> {
-                try {
-                    if (UserLogManager.isLogged()) {
-                        System.err.println("You already logged in.");
-                        break;
-                    }
-                    if (tokens.length != 2) {
-                        System.err.println("Wrong syntax. Correct use: log <username>");
-                    } else {
-                        // TODO: validate username
-                        String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(tokens[1]));
-                        Message message =
-                                new Message(Message.LOGIN_TYPE, tokens[1], 0, jsonSubMessage);
-                        String json = JsonSerializer.serialize(message);
-                        ClientMain.getConnection().send(json);
-                    }
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-            case "calc", "calculate" -> {
-                if (!ClientMain.getConnection().isConnected()) {
-                    System.err.println("You must connect to a server with the conn or connect command before using the calculator");
-                    break;
-                }
-                if (!UserLogManager.isLogged()) {
-                    System.err.println("You must login with the log or login command before using the calculator");
-                    break;
-                }
-                if (tokens.length != 4) {
-                    System.err.println("Wrong syntax. Correct use: calc <a> <operand> <b>");
-                } else {
-                    char operand;
-                    float a, b;
-                    a = Float.parseFloat(tokens[1]);
-                    operand = tokens[2].charAt(0);
-                    b = Float.parseFloat(tokens[3]);
-
-                    try {
-                        String jsonSubMessage = JsonSerializer.serialize(new Message.CalculateMessage(operand, a, b));
-                        Message message =
-                                new Message(Message.CALCULATE_TYPE, UserLogManager.getUsername(), 1, jsonSubMessage);
-                        ClientMain.getConnection().send(JsonSerializer.serialize(message));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            default -> System.err.println("Unknown command. Type help for a list of available commands");
-        }
-    }
+		switch (command.toLowerCase()) {
+			case "stop" -> {
+				// TODO: send stop message
+				ClientMain.stop();
+			}
+			case "conn", "connect" -> {
+				if (tokens.length != 2) {
+					System.err.println("Wrong syntax. Correct use: conn <address>");
+				}
+				else {
+					ClientMain.getConnection().setServerAddress(tokens[1]);
+					ClientMain.getConnection().start();
+				}
+			}
+			case "log", "login" -> {
+				try {
+					if (UserLogManager.isLogged()) {
+						System.err.println("You already logged in.");
+						break;
+					}
+					if (tokens.length != 2) {
+						System.err.println("Wrong syntax. Correct use: log <username>");
+					}
+					else {
+						// TODO: validate username
+						String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(tokens[1]));
+						Message message =
+								new Message(Message.LOGIN_TYPE, tokens[1], 0, jsonSubMessage);
+						String json = JsonSerializer.serialize(message);
+						ClientMain.getConnection().send(json);
+					}
+				}
+				catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			}
+			case "calc", "calculate" -> {
+				if (!ClientMain.getConnection().isConnected()) {
+					System.err.println(
+							"You must connect to a server with the conn or connect command before using the" +
+									" calculator");
+					break;
+				}
+				if (!UserLogManager.isLogged()) {
+					System.err.println("You must login with the log or login command before using the calculator");
+					break;
+				}
+				if (tokens.length != 4) {
+					System.err.println("Wrong syntax. Correct use: calc <a> <operand> <b>");
+				}
+				else {
+					char operand;
+					float a, b;
+					try {
+						a = Float.parseFloat(tokens[1]);
+						operand = tokens[2].charAt(0);
+						b = Float.parseFloat(tokens[3]);
+						String jsonSubMessage = JsonSerializer.serialize(new Message.CalculateMessage(operand, a, b));
+						Message message =
+								new Message(Message.CALCULATE_TYPE, UserLogManager.getUsername(), 1, jsonSubMessage);
+						ClientMain.getConnection().send(JsonSerializer.serialize(message));
+					}
+					catch (NumberFormatException e) {
+						System.err.println("The numbers inserted are not valid");
+					}
+					catch (JsonProcessingException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			default -> System.err.println("Unknown command. Type help for a list of available commands");
+		}
+	}
 }
