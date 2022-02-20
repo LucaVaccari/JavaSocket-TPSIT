@@ -1,5 +1,6 @@
 package it.castelli.tpsit.JavaSocket.networking.connection;
 
+import it.castelli.tpsit.JavaSocket.ServerMain;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
 import it.castelli.tpsit.JavaSocket.networking.message.handlers.GenericMessageHandler;
 import it.castelli.tpsit.JavaSocket.networking.message.handlers.RemoteCalculatorMessageHandler;
@@ -7,6 +8,7 @@ import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Handles a connection with a single client (input and output)
@@ -31,25 +33,32 @@ public class ClientConnection extends Thread {
 
 			while (true) {
 				// TODO: handle socket exception
-				String input = reader.readLine();
-				Message message = JsonSerializer.deserialize(input, Message.class);
-				switch (message.getService()) {
-					case 0 -> GenericMessageHandler.handle(message, this);
-					case 1 -> RemoteCalculatorMessageHandler.handle(message, this);
-					case 2 -> {
+				try {
+					String input = reader.readLine();
+					Message message = JsonSerializer.deserialize(input, Message.class);
+					switch (message.getService()) {
+						case 0 -> GenericMessageHandler.handle(message, this);
+						case 1 -> RemoteCalculatorMessageHandler.handle(message, this);
+						case 2 -> {
+						}
+						case 3 -> {
+						}
+						case 4 -> {
+						}
+						case 5 -> {
+						}
+						case 6 -> {
+						}
+						case 7 -> {
+						}
+						case 8 -> {
+						}
 					}
-					case 3 -> {
-					}
-					case 4 -> {
-					}
-					case 5 -> {
-					}
-					case 6 -> {
-					}
-					case 7 -> {
-					}
-					case 8 -> {
-					}
+				}
+				catch (SocketException exception) {
+					System.out.println(username + " disconnected");
+					interrupt();
+					return;
 				}
 			}
 		}
@@ -77,6 +86,7 @@ public class ClientConnection extends Thread {
 	@Override
 	public void interrupt() {
 		try {
+			ServerMain.getConnectionManager().removeConnection(this);
 			socket.close();
 		}
 		catch (IOException e) {

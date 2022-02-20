@@ -17,8 +17,14 @@ public class ClientCommandProcessor extends CommandProcessor {
 
 		switch (command.toLowerCase()) {
 			case "stop" -> {
-				// TODO: send stop message
-				ClientMain.stop();
+				try {
+					Message stopMessage = new Message(Message.STOP_MESSAGE, UserLogManager.getUsername(), 0, "");
+					ClientMain.getConnection().send(JsonSerializer.serialize(stopMessage));
+					ClientMain.stop();
+				}
+				catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
 			}
 			case "conn", "connect" -> {
 				if (tokens.length != 2) {

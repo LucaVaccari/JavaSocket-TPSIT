@@ -76,6 +76,18 @@ public class ConnectionManager extends Thread {
 		for (var connection : unloggedConnections) {
 			connection.interrupt();
 		}
+		unloggedConnections.clear();
+		loggedConnections.clear();
 		super.interrupt();
+	}
+
+	public void removeConnection(String username) {
+		loggedConnections.get(username).interrupt();
+		loggedConnections.remove(username);
+	}
+
+	public void removeConnection(ClientConnection connection) {
+		unloggedConnections.remove(connection);
+		loggedConnections.values().remove(connection);
 	}
 }

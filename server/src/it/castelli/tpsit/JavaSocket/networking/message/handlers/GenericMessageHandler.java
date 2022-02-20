@@ -29,6 +29,7 @@ public class GenericMessageHandler {
 					e.printStackTrace();
 				}
 			}
+			case Message.STOP_MESSAGE -> ServerMain.getConnectionManager().removeConnection(message.getUsername());
 			default -> System.err.println(
 					"(Program log) Error in generic message, unsupported message type: " + message.getType());
 		}

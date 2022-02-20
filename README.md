@@ -33,7 +33,7 @@ TODO:
 	- chat
 	- help
 - server actions/commands/messages
-	- enable disable
+	- enable, disable
 	- kick
 	- stop (disconnect everyone)
 	- help
