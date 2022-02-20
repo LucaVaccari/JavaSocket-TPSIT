@@ -30,8 +30,8 @@ public class ClientConnection extends Thread {
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
 			while (true) {
+				// TODO: handle socket exception
 				String input = reader.readLine();
-				System.out.println(input);
 				Message message = JsonSerializer.deserialize(input, Message.class);
 				switch (message.getService()) {
 					case 0 -> GenericMessageHandler.handle(message, this);
@@ -58,9 +58,15 @@ public class ClientConnection extends Thread {
 		}
 	}
 
+	/**
+	 * Sends a message to the client
+	 *
+	 * @param message The json message
+	 */
 	public void send(String message) {
 		try {
-			writer.write(message);
+			writer.write(message + (message.endsWith("\n") ? "" : "\n"));
+			writer.flush();
 		}
 		catch (IOException e) {
 			e.printStackTrace();

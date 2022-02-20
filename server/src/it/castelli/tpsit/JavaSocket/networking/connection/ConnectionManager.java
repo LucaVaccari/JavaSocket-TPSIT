@@ -61,7 +61,7 @@ public class ConnectionManager extends Thread {
 	 */
 	public void logConnection(String username, ClientConnection connection) {
 		if (loggedConnections.containsKey(username))
-			throw new IllegalArgumentException("Trying to add an already logged user");
+			throw new IllegalArgumentException("Trying to add an already logged user"); // TODO: send error to the client
 		else {
 			loggedConnections.put(username, connection);
 			connection.setUsername(username);

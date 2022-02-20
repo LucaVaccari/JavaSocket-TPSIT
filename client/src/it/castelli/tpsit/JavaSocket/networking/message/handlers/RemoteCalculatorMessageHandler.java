@@ -1,7 +1,6 @@
 package it.castelli.tpsit.JavaSocket.networking.message.handlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import it.castelli.tpsit.JavaSocket.networking.message.GenericMessage;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
 
 public class RemoteCalculatorMessageHandler {
@@ -10,7 +9,7 @@ public class RemoteCalculatorMessageHandler {
 			case Message.GENERIC_TYPE -> {
 				try {
 					System.out.println(
-							"The result of the calculation is: " + message.getContent(GenericMessage.class).message());
+							"The result of the calculation is: " + message.getContent(Message.GenericMessage.class).message());
 				}
 				catch (JsonProcessingException e) {
 					e.printStackTrace();

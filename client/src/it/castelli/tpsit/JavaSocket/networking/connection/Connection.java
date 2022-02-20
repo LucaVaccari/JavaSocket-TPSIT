@@ -17,6 +17,7 @@ public class Connection extends Thread {
 	private Socket socket;
 	private BufferedReader reader;
 	private BufferedWriter writer;
+	private boolean connected = false;
 
 	@Override
 	public void run() {
@@ -25,6 +26,7 @@ public class Connection extends Thread {
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			System.out.println("Connected with " + serverAddress + " on port " + GlobalData.PORT);
+			connected = true;
 		}
 		catch (IOException e) {
 			System.err.println("Error while connecting to the server: invalid address or server unreachable");
@@ -62,11 +64,12 @@ public class Connection extends Thread {
 	/**
 	 * Sends a message to the server
 	 *
-	 * @param json The json message
+	 * @param message The json message
 	 */
-	public void send(String json) {
+	public void send(String message) {
 		try {
-			writer.write(json);
+			writer.write(message + (message.endsWith("\n") ? "" : "\n"));
+			writer.flush();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -87,5 +90,9 @@ public class Connection extends Thread {
 
 	public void setServerAddress(String serverAddress) {
 		this.serverAddress = serverAddress;
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }

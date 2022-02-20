@@ -2,8 +2,6 @@ package it.castelli.tpsit.JavaSocket.networking.message.handlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import it.castelli.tpsit.JavaSocket.networking.connection.ClientConnection;
-import it.castelli.tpsit.JavaSocket.networking.message.CalculateMessage;
-import it.castelli.tpsit.JavaSocket.networking.message.GenericMessage;
 import it.castelli.tpsit.JavaSocket.networking.message.Message;
 import it.castelli.tpsit.JavaSocket.serialization.JsonSerializer;
 
@@ -12,7 +10,7 @@ public class RemoteCalculatorMessageHandler {
 		switch (message.getType()) {
 			case Message.CALCULATE_TYPE -> {
 				try {
-					CalculateMessage calculateMessage = message.getContent(CalculateMessage.class);
+					Message.CalculateMessage calculateMessage = message.getContent(Message.CalculateMessage.class);
 					double result = switch (calculateMessage.operation()) {
 						case '+' -> calculateMessage.a() + calculateMessage.b();
 						case '-' -> calculateMessage.a() - calculateMessage.b();
@@ -23,7 +21,7 @@ public class RemoteCalculatorMessageHandler {
 					};
 
 					try {
-						String jsonSubMessage = JsonSerializer.serialize(new GenericMessage("Result: " + result));
+						String jsonSubMessage = JsonSerializer.serialize(new Message.GenericMessage(String.valueOf(result)));
 						Message newMessage =
 								new Message(Message.GENERIC_TYPE, clientConnection.getUsername(), 1, jsonSubMessage);
 						clientConnection.send(JsonSerializer.serialize(newMessage));
