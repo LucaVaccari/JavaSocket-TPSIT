@@ -1,6 +1,7 @@
 package it.castelli.tpsit.JavaSocket.networking.connection;
 
 import it.castelli.tpsit.JavaSocket.GlobalData;
+import it.castelli.tpsit.JavaSocket.networking.message.Message;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -32,23 +33,23 @@ public class ConnectionManager extends Thread {
     }
 
     /**
-     * Sends a message to a specific user
+     * Converts a message to json, then sends it to a specific user
      *
      * @param username The username of the user
      * @param message  The message to send
      */
-    public void send(String username, String message) {
+    public void send(String username, Message message) {
         ClientConnection clientConnection = loggedConnections.get(username);
         if (clientConnection == null) throw new IllegalArgumentException("Invalid username");
         clientConnection.send(message);
     }
 
     /**
-     * Sends a message to every connected client
+     * Converts a message to json, then sends it to every connected client
      *
      * @param message The message to send
      */
-    public void broadcast(String message) {
+    public void broadcast(Message message) {
         for (var client : loggedConnections.values()) client.send(message);
         for (var client : unloggedConnections) client.send(message);
     }

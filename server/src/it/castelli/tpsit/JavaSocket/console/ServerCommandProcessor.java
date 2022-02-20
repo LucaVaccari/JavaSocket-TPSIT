@@ -23,7 +23,7 @@ public class ServerCommandProcessor extends CommandProcessor {
                 try {
                     String subMessageJson = JsonSerializer.serialize(new Message.GenericMessage("Server stopped"));
                     Message stopMessage = new Message(Message.STOP_MESSAGE, "", 0, subMessageJson);
-                    ServerMain.getConnectionManager().broadcast(JsonSerializer.serialize(stopMessage));
+                    ServerMain.getConnectionManager().broadcast(stopMessage);
                     ServerMain.stop();
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -38,7 +38,7 @@ public class ServerCommandProcessor extends CommandProcessor {
                     String stringMessage = "Server message: " + String.join(" ", tokens).strip();
                     String subMessageJson = JsonSerializer.serialize(new Message.GenericMessage(stringMessage));
                     Message broadcastMessage = new Message(Message.GENERIC_TYPE, "[server]", 0, subMessageJson);
-                    ServerMain.getConnectionManager().broadcast(JsonSerializer.serialize(broadcastMessage));
+                    ServerMain.getConnectionManager().broadcast(broadcastMessage);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }

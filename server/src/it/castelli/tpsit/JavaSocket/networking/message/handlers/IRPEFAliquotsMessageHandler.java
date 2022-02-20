@@ -35,7 +35,7 @@ public class IRPEFAliquotsMessageHandler {
                 Message.AliquotMessage resultMessage = new Message.AliquotMessage(result);
                 Message newMessage = new Message(Message.ALIQUOT_CALC_TYPE, connection.getUsername(), 2,
                         JsonSerializer.serialize(resultMessage));
-                connection.send(JsonSerializer.serialize(newMessage));
+                connection.send(newMessage);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

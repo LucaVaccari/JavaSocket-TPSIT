@@ -17,15 +17,11 @@ public class ClientCommandProcessor extends CommandProcessor {
 
         switch (command.toLowerCase()) {
             case "stop" -> {
-                try {
-                    if (ClientMain.getConnection().isConnected()) {
-                        Message stopMessage = new Message(Message.STOP_MESSAGE, UserLogManager.getUsername(), 0, "");
-                        ClientMain.getConnection().send(JsonSerializer.serialize(stopMessage));
-                    }
-                    ClientMain.stop();
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                if (ClientMain.getConnection().isConnected()) {
+                    Message stopMessage = new Message(Message.STOP_MESSAGE, UserLogManager.getUsername(), 0, "");
+                    ClientMain.getConnection().send(stopMessage);
                 }
+                ClientMain.stop();
             }
             case "conn", "connect" -> {
                 if (invalidSyntaxCheck(2, tokens.length, "conn <address>")) break;
@@ -42,8 +38,7 @@ public class ClientCommandProcessor extends CommandProcessor {
                     String username = tokens[1];
                     String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(username));
                     Message message = new Message(Message.LOGIN_TYPE, username, 0, jsonSubMessage);
-                    String json = JsonSerializer.serialize(message);
-                    ClientMain.getConnection().send(json);
+                    ClientMain.getConnection().send(message);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -60,7 +55,7 @@ public class ClientCommandProcessor extends CommandProcessor {
                     String jsonSubMessage = JsonSerializer.serialize(new Message.CalculateMessage(operand, a, b));
                     Message message =
                             new Message(Message.CALCULATE_TYPE, UserLogManager.getUsername(), 1, jsonSubMessage);
-                    ClientMain.getConnection().send(JsonSerializer.serialize(message));
+                    ClientMain.getConnection().send(message);
                 } catch (NumberFormatException e) {
                     System.err.println("The numbers inserted are not valid");
                 } catch (JsonProcessingException e) {
@@ -74,13 +69,32 @@ public class ClientCommandProcessor extends CommandProcessor {
                     double value = Double.parseDouble(tokens[1]);
                     String jsonSubMessage = JsonSerializer.serialize(new Message.AliquotMessage(value));
                     Message message =
-                            new Message(Message.ALIQUOT_CALC_TYPE, UserLogManager.getUsername(), 2,
-                                    jsonSubMessage);
-                    ClientMain.getConnection().send(JsonSerializer.serialize(message));
+                            new Message(Message.ALIQUOT_CALC_TYPE, UserLogManager.getUsername(), 2, jsonSubMessage);
+                    ClientMain.getConnection().send(message);
                 } catch (NumberFormatException e) {
                     System.err.println("The number inserted is not valid");
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
+                }
+            }
+            case "guess", "gtn" -> {
+                if (invalidFullCheck(2, tokens.length, "guess <option> or guess <number>")) break;
+
+                if (tokens[1].equalsIgnoreCase("start")) {
+                    Message message = new Message(Message.START_GUESS_THE_NUMBER_TYPE, UserLogManager.getUsername(), 3, "");
+                    ClientMain.getConnection().send(message);
+                } else {
+                    try {
+                        int value = Integer.parseInt(tokens[1]);
+                        String subMessageJson = JsonSerializer.serialize(new Message.GuessTheNumberMessage(value));
+                        Message message =
+                                new Message(Message.GUESS_THE_NUMBER_NUM_TYPE, UserLogManager.getUsername(), 3, subMessageJson);
+                        ClientMain.getConnection().send(message);
+                    } catch (NumberFormatException e) {
+                        System.err.println("The number inserted is not valid");
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             default -> System.err.println("Unknown command. Type help for a list of available commands");
