@@ -33,7 +33,6 @@ public class Connection extends Thread {
 		// TODO: find a way to not use while(true)
 		while (true) {
 			try {
-				// TODO: add socket try catch
 				String jsonMessage = reader.readLine();
 				Message message = JsonSerializer.deserialize(jsonMessage, Message.class);
 				if (message != null) {

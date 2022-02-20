@@ -27,7 +27,7 @@ TODO:
 - client actions/commands/messages
 	- aliquot
 	- guessTheNumber:
-		- start game
+		- start game (options)
 		- guess
 	- chat
 	- help

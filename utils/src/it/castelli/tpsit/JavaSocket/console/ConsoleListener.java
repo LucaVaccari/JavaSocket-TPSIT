@@ -17,7 +17,6 @@ public class ConsoleListener extends Thread {
 		System.out.println("Welcome.\nSoftware by Luca Vaccari.");
 		// TODO: find a way to not use while(true)
 		while (true) {
-			// TODO: try to not skip the first line
 			String input = scanner.nextLine();
 			CommandProcessor.getInstance().handleCommand(input);
 		}

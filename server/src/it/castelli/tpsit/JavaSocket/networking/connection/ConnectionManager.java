@@ -27,7 +27,7 @@ public class ConnectionManager extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            // TODO: handle connection error
+            interrupt();
         }
     }
 
@@ -61,7 +61,6 @@ public class ConnectionManager extends Thread {
      */
     public void logConnection(String username, ClientConnection connection) {
         if (loggedConnections.containsKey(username)) {
-            // TODO: send error to the client
             throw new IllegalArgumentException("Trying to add an already logged user");
         } else {
             loggedConnections.put(username, connection);
