@@ -17,7 +17,7 @@ public class Connection extends Thread {
 	private Socket socket;
 	private BufferedReader reader;
 	private BufferedWriter writer;
-	private boolean connected = false;
+	private static boolean connected = false;
 
 	@Override
 	public void run() {
@@ -37,27 +37,32 @@ public class Connection extends Thread {
 				// TODO: add socket try catch
 				String jsonMessage = reader.readLine();
 				Message message = JsonSerializer.deserialize(jsonMessage, Message.class);
-				switch (message.getService()) {
-					case 0 -> GenericMessageHandler.handle(message);
-					case 1 -> RemoteCalculatorMessageHandler.handle(message);
-					case 2 -> {
-					}
-					case 3 -> {
-					}
-					case 4 -> {
-					}
-					case 5 -> {
-					}
-					case 6 -> {
-					}
-					case 7 -> {
-					}
-					case 8 -> {
+				if (message != null) {
+					switch (message.getService()) {
+						case 0 -> GenericMessageHandler.handle(message);
+						case 1 -> RemoteCalculatorMessageHandler.handle(message);
+						case 2 -> {
+						}
+						case 3 -> {
+						}
+						case 4 -> {
+						}
+						case 5 -> {
+						}
+						case 6 -> {
+						}
+						case 7 -> {
+						}
+						case 8 -> {
+						}
 					}
 				}
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Disconnected from the server");
+				connected = false;
+				interrupt();
+				return;
 			}
 		}
 	}
@@ -73,14 +78,14 @@ public class Connection extends Thread {
 			writer.flush();
 		}
 		catch (IOException e) {
-			e.printStackTrace();
-			// TODO: handle error
+			interrupt();
 		}
 	}
 
 	@Override
 	public void interrupt() {
 		try {
+			connected = false;
 			socket.close();
 		}
 		catch (IOException e) {

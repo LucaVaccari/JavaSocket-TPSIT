@@ -28,6 +28,10 @@ public class GenericMessageHandler {
 					e.printStackTrace();
 				}
 			}
+			case Message.STOP_MESSAGE -> {
+				System.out.println("The server is stopping");
+				UserLogManager.logout();
+			}
 			default -> System.err.println(
 					"(Program log) Error in generic message, unsupported message type: " + message.getType());
 		}

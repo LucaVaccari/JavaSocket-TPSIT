@@ -9,7 +9,12 @@ public class UserLogManager {
 	}
 
 	public static void login() {
-		UserLogManager.logged = true;
+		logged = true;
+	}
+
+	public static void logout() {
+		logged = false;
+		username = "";
 	}
 
 	public static String getUsername() {

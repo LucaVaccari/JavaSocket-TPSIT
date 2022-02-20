@@ -5,15 +5,15 @@ import it.castelli.tpsit.JavaSocket.GlobalData;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Handles the connections with the clients
  */
 public class ConnectionManager extends Thread {
-	private final ArrayList<ClientConnection> unloggedConnections = new ArrayList<>();
-	private final HashMap<String, ClientConnection> loggedConnections = new HashMap<>();
+	private final ConcurrentLinkedQueue<ClientConnection> unloggedConnections = new ConcurrentLinkedQueue<>();
+	private final ConcurrentHashMap<String, ClientConnection> loggedConnections = new ConcurrentHashMap<>();
 
 	@Override
 	public void run() {

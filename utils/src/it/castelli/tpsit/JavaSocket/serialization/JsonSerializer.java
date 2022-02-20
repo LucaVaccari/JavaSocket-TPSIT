@@ -31,6 +31,7 @@ public final class JsonSerializer {
 	 * @throws JsonProcessingException If the conversion throws an error
 	 */
 	public static <T> T deserialize(String json, Class<T> tClass) throws JsonProcessingException {
+		if (json == null) return null;
 		return mapper.readValue(json, tClass);
 	}
 }

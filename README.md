@@ -29,7 +29,6 @@ TODO:
 	- guessTheNumber:
 		- start game
 		- guess
-	- stop connection
 	- chat
 	- help
 - server actions/commands/messages

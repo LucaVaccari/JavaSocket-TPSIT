@@ -17,6 +17,8 @@ public class ClientMain {
 		return connection;
 	}
 
+
+
 	public static void stop() {
 		connection.interrupt();
 		consoleListener.interrupt();
