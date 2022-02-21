@@ -24,7 +24,7 @@ public class ConsoleListener extends Thread {
 
 	@Override
 	public void interrupt() {
-		System.out.print("Interrupting...");
+		System.out.println("Interrupting...");
 		super.interrupt();
 	}
 }
