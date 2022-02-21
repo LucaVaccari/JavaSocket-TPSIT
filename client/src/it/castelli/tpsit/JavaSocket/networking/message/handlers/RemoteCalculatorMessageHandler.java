@@ -8,7 +8,7 @@ public class RemoteCalculatorMessageHandler {
         try {
             if (Message.GENERIC_TYPE.equals(message.getType())) {
                 System.out.println("The result of the calculation is: " +
-                        message.getContent(Message.GenericMessage.class).message());
+                        message.getContent(Message.StringMessage.class).value());
             } else {
                 System.err.println(
                         "(Program log) Error in remote calculator message, unsupported message type: " + message.getType());

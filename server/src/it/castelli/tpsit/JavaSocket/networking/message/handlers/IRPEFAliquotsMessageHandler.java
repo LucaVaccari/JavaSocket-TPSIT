@@ -9,7 +9,7 @@ public class IRPEFAliquotsMessageHandler {
     public static void handle(Message message, ClientConnection connection) {
         if (Message.ALIQUOT_CALC_TYPE.equals(message.getType())) {
             try {
-                Message.AliquotMessage aliquotMessage = message.getContent(Message.AliquotMessage.class);
+                Message.DoubleMessage aliquotMessage = message.getContent(Message.DoubleMessage.class);
                 double result = 0;
                 double value = aliquotMessage.value();
 
@@ -32,7 +32,7 @@ public class IRPEFAliquotsMessageHandler {
                     result += aliquot;
                 }
 
-                Message.AliquotMessage resultMessage = new Message.AliquotMessage(result);
+                Message.DoubleMessage resultMessage = new Message.DoubleMessage(result);
                 Message newMessage = new Message(Message.ALIQUOT_CALC_TYPE, connection.getUsername(), 2,
                         JsonSerializer.serialize(resultMessage));
                 connection.send(newMessage);

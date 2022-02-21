@@ -11,8 +11,8 @@ class MessageSerializationTest {
     @Test
     void serializeMessage() {
         try {
-            Message.GenericMessage genericMessage = new Message.GenericMessage("hello");
-            Message message = new Message("generic", "", 0, JsonSerializer.serialize(genericMessage));
+            Message.StringMessage stringMessage = new Message.StringMessage("hello");
+            Message message = new Message("generic", "", 0, JsonSerializer.serialize(stringMessage));
             assertEquals("{\"type\":\"generic\",\"username\":\"\",\"service\":0,\"serializedContend\":\"{message:\"hello\"}\"}", JsonSerializer.serialize(message));
         } catch (JsonProcessingException e) {
             e.printStackTrace();

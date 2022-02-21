@@ -9,7 +9,7 @@ public class RemoteCalculatorMessageHandler {
     public static void handle(Message message, ClientConnection clientConnection) {
         if (Message.CALCULATE_TYPE.equals(message.getType())) {
             try {
-                Message.CalculateMessage calculateMessage = message.getContent(Message.CalculateMessage.class);
+                Message.CalculationMessage calculateMessage = message.getContent(Message.CalculationMessage.class);
                 double result = switch (calculateMessage.operation()) {
                     case '+' -> calculateMessage.a() + calculateMessage.b();
                     case '-' -> calculateMessage.a() - calculateMessage.b();
@@ -20,7 +20,7 @@ public class RemoteCalculatorMessageHandler {
                 };
 
                 String jsonSubMessage =
-                        JsonSerializer.serialize(new Message.GenericMessage(String.valueOf(result)));
+                        JsonSerializer.serialize(new Message.StringMessage(String.valueOf(result)));
                 Message newMessage =
                         new Message(Message.GENERIC_TYPE, clientConnection.getUsername(), 1, jsonSubMessage);
                 clientConnection.send(newMessage);

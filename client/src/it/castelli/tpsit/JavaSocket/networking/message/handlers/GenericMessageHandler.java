@@ -9,18 +9,18 @@ public class GenericMessageHandler {
         try {
             switch (message.getType()) {
                 case Message.GENERIC_TYPE -> {
-                    Message.GenericMessage genericMessage = message.getContent(Message.GenericMessage.class);
-                    System.out.println(genericMessage.message());
+                    Message.StringMessage stringMessage = message.getContent(Message.StringMessage.class);
+                    System.out.println(stringMessage.value());
                 }
                 case Message.LOGIN_TYPE -> {
-                    Message.LoginMessage loginMessage = message.getContent(Message.LoginMessage.class);
+                    Message.StringMessage loginMessage = message.getContent(Message.StringMessage.class);
                     UserLogManager.login();
-                    UserLogManager.setUsername(loginMessage.username());
-                    System.out.println("Logged in successfully with username " + loginMessage.username());
+                    UserLogManager.setUsername(loginMessage.value());
+                    System.out.println("Logged in successfully with username " + loginMessage.value());
                 }
                 case Message.ERROR_MESSAGE -> {
-                    Message.GenericMessage genericMessage = message.getContent(Message.GenericMessage.class);
-                    System.err.println("Error from the server: " + genericMessage.message());
+                    Message.StringMessage stringMessage = message.getContent(Message.StringMessage.class);
+                    System.err.println("Error from the server: " + stringMessage.value());
                 }
                 case Message.STOP_MESSAGE -> {
                     System.out.println("The server is stopping");

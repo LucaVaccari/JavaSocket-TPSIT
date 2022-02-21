@@ -29,7 +29,7 @@ public class ClientCommandProcessor extends CommandProcessor {
 					else {
 						System.out.println("calc, calculate <a> <operand> <b> -> computes a calculation");
 						System.out.println("irpef, aliquots <value> -> computes the IRPEF aliquots of the value");
-						System.out.println("guess, gtn <...> -> handles 'guess the number' game");
+						System.out.println("guess, gtn <...> -> handles 'guess the value' game");
 					}
 
 					System.out.println("stop -> stops the program");
@@ -60,7 +60,7 @@ public class ClientCommandProcessor extends CommandProcessor {
 						break;
 
 					String username = tokens[1];
-					String jsonSubMessage = JsonSerializer.serialize(new Message.LoginMessage(username));
+					String jsonSubMessage = JsonSerializer.serialize(new Message.StringMessage(username));
 					Message message = new Message(Message.LOGIN_TYPE, username, 0, jsonSubMessage);
 					ClientMain.getConnection().send(message);
 				}
@@ -77,7 +77,7 @@ public class ClientCommandProcessor extends CommandProcessor {
 					a = Float.parseFloat(tokens[1]);
 					operand = tokens[2].charAt(0);
 					b = Float.parseFloat(tokens[3]);
-					String jsonSubMessage = JsonSerializer.serialize(new Message.CalculateMessage(operand, a, b));
+					String jsonSubMessage = JsonSerializer.serialize(new Message.CalculationMessage(operand, a, b));
 					Message message =
 							new Message(Message.CALCULATE_TYPE, UserLogManager.getUsername(), 1, jsonSubMessage);
 					ClientMain.getConnection().send(message);
@@ -94,20 +94,20 @@ public class ClientCommandProcessor extends CommandProcessor {
 
 				try {
 					double value = Double.parseDouble(tokens[1]);
-					String jsonSubMessage = JsonSerializer.serialize(new Message.AliquotMessage(value));
+					String jsonSubMessage = JsonSerializer.serialize(new Message.DoubleMessage(value));
 					Message message =
 							new Message(Message.ALIQUOT_CALC_TYPE, UserLogManager.getUsername(), 2, jsonSubMessage);
 					ClientMain.getConnection().send(message);
 				}
 				catch (NumberFormatException e) {
-					System.err.println("The number inserted is not valid");
+					System.err.println("The value inserted is not valid");
 				}
 				catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
 			}
 			case "guess", "gtn" -> {
-				if (invalidFullCheck(2, tokens.length, "guess <option> or guess <number>")) break;
+				if (invalidFullCheck(2, tokens.length, "guess <option> or guess <value>")) break;
 
 				if (tokens[1].equalsIgnoreCase("start")) {
 					Message message =
@@ -117,14 +117,14 @@ public class ClientCommandProcessor extends CommandProcessor {
 				else {
 					try {
 						int value = Integer.parseInt(tokens[1]);
-						String subMessageJson = JsonSerializer.serialize(new Message.GuessTheNumberMessage(value));
+						String subMessageJson = JsonSerializer.serialize(new Message.IntMessage(value));
 						Message message =
 								new Message(Message.GUESS_THE_NUMBER_NUM_TYPE, UserLogManager.getUsername(), 3,
 										subMessageJson);
 						ClientMain.getConnection().send(message);
 					}
 					catch (NumberFormatException e) {
-						System.err.println("The number inserted is not valid");
+						System.err.println("The value inserted is not valid");
 					}
 					catch (JsonProcessingException e) {
 						e.printStackTrace();
@@ -136,10 +136,10 @@ public class ClientCommandProcessor extends CommandProcessor {
 	}
 
 	/**
-	 * Checks for the connection, the login and the number of parameters
+	 * Checks for the connection, the login and the value of parameters
 	 *
-	 * @param expected      The expected number of parameters
-	 * @param actual        The actual number of parameters
+	 * @param expected      The expected value of parameters
+	 * @param actual        The actual value of parameters
 	 * @param correctSyntax The syntax template to print when expect and actual don't match
 	 * @return whether all the checks are passed
 	 */
@@ -175,12 +175,12 @@ public class ClientCommandProcessor extends CommandProcessor {
 	}
 
 	/**
-	 * Check if the number of parameters in a command line is correct
+	 * Check if the value of parameters in a command line is correct
 	 *
-	 * @param expected      The expected number of parameters
-	 * @param actual        The actual number of parameters
+	 * @param expected      The expected value of parameters
+	 * @param actual        The actual value of parameters
 	 * @param correctSyntax The syntax template to print when expect and actual don't match
-	 * @return whether the number of parameters is correct or not
+	 * @return whether the value of parameters is correct or not
 	 */
 	private boolean invalidSyntaxCheck(int expected, int actual, String correctSyntax) {
 		if (expected != actual) {

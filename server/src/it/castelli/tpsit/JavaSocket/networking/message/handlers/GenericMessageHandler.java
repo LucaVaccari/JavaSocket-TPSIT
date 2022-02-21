@@ -11,14 +11,14 @@ public class GenericMessageHandler {
         switch (message.getType()) {
             case Message.LOGIN_TYPE -> {
                 try {
-                    Message.LoginMessage loginMessage = message.getContent(Message.LoginMessage.class);
-                    String username = loginMessage.username();
+                    Message.StringMessage loginMessage = message.getContent(Message.StringMessage.class);
+                    String username = loginMessage.value();
                     try {
                         ServerMain.getConnectionManager().logConnection(username, clientConnection);
                         ServerMain.getConnectionManager().send(username, message);
                         System.out.println("New user logged: " + username);
                     } catch (IllegalArgumentException e) {
-                        String jsonErrorSubMessage = JsonSerializer.serialize(new Message.GenericMessage(
+                        String jsonErrorSubMessage = JsonSerializer.serialize(new Message.StringMessage(
                                 "The username " + username + " is already logged. Try a different username"));
                         Message errorMessage = new Message(Message.ERROR_MESSAGE, username, 0, jsonErrorSubMessage);
                         clientConnection.send(errorMessage);
