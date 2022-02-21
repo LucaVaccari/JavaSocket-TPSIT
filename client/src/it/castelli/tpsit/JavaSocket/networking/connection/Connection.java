@@ -15,7 +15,6 @@ import java.net.Socket;
 public class Connection extends Thread {
 	private String serverAddress = "localhost";
 	private Socket socket;
-	private BufferedReader reader;
 	private BufferedWriter writer;
 	private static boolean connected = false;
 
@@ -23,7 +22,7 @@ public class Connection extends Thread {
 	public void run() {
 		try {
 			socket = new Socket(serverAddress, GlobalData.PORT);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			System.out.println("Connected with " + serverAddress + " on port " + GlobalData.PORT);
 			connected = true;
@@ -55,6 +54,8 @@ public class Connection extends Thread {
 			}
 		} catch (IOException e) {
 			System.err.println("Error while connecting to the server: invalid address or server unreachable");
+			connected = false;
+			interrupt();
 		}
 	}
 
@@ -89,7 +90,7 @@ public class Connection extends Thread {
 	public void interrupt() {
 		try {
 			connected = false;
-			socket.close();
+			if (socket != null) socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -49,8 +49,8 @@ public class ClientCommandProcessor extends CommandProcessor {
 			}
 			case "conn", "connect" -> {
 				if (invalidSyntaxCheck(2, tokens.length, "conn <address>")) break;
+				ClientMain.generateConnection();
 				ClientMain.getConnection().setServerAddress(tokens[1]);
-				ClientMain.getConnection().start();
 			}
 			case "log", "login" -> {
 				try {
