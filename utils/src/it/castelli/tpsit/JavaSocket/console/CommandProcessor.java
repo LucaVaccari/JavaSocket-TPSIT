@@ -41,4 +41,20 @@ public abstract class CommandProcessor {
 	 * @param inputLine The full line of the command inserted
 	 */
 	public abstract void handleCommand(String inputLine);
+
+	/**
+	 * Check if the value of parameters in a command line is correct
+	 *
+	 * @param expected      The expected value of parameters
+	 * @param actual        The actual value of parameters
+	 * @param correctSyntax The syntax template to print when expect and actual don't match
+	 * @return whether the value of parameters is correct or not
+	 */
+	protected boolean invalidSyntaxCheck(int expected, int actual, String correctSyntax) {
+		if (expected != actual) {
+			System.err.println("Wrong syntax. Correct use: " + correctSyntax);
+			return true;
+		}
+		return false;
+	}
 }

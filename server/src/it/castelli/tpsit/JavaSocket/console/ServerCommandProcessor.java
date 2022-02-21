@@ -28,8 +28,7 @@ public class ServerCommandProcessor extends CommandProcessor {
 					Message stopMessage = new Message(Message.STOP_MESSAGE, "", 0, subMessageJson);
 					ServerMain.getConnectionManager().broadcast(stopMessage);
 					ServerMain.stop();
-				}
-				catch (JsonProcessingException e) {
+				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
 			}
@@ -40,13 +39,21 @@ public class ServerCommandProcessor extends CommandProcessor {
 					System.out.println("stop -> stops the program");
 					System.out.println("help -> shows a list of available commands");
 					System.out.println("help <command> -> shows help for the specified command");
-				}
-				else {
+				} else {
 					System.err.println("help command with parameter not implemented yet");
 				}
 			}
 			case "kick" -> {
-				// TODO: implement kick
+				// TODO: IT DOES NOT WORK
+				if (!invalidSyntaxCheck(2, tokens.length, "kick <username> or kick unlogged")) {
+					if (tokens[1].equalsIgnoreCase("unlogged")) {
+						ServerMain.getConnectionManager().removeUnloggedConnections(true);
+						System.out.println("Disconnecting all the users which are not logged");
+					} else {
+						ServerMain.getConnectionManager().removeConnection(tokens[1], true);
+						System.out.println("Disconnecting " + tokens[1]);
+					}
+				}
 			}
 			case "broadcast" -> {
 				try {
@@ -57,8 +64,7 @@ public class ServerCommandProcessor extends CommandProcessor {
 					Message broadcastMessage = new Message(Message.GENERIC_TYPE, "[server]", 0,
 							subMessageJson);
 					ServerMain.getConnectionManager().broadcast(broadcastMessage);
-				}
-				catch (JsonProcessingException e) {
+				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
 			}
